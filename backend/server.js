@@ -60,6 +60,16 @@ app.delete('/rmcar/:id', (req, res) => {
     });
 });
 
+
+app.get('/car/:id',(req, res)=>{
+    const id = req.params.id
+    const sql = "SELECT * FROM models WHERE id = ?";
+    db.query(sql,id,(err,data)=>{
+        if(err) return res.json("Error");
+        return (res.json(data));
+    });
+});
+
 app.listen(8081,()=>{
     console.log("running ");
 })

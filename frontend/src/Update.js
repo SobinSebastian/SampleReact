@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 
 function Update() {
@@ -7,6 +7,18 @@ function Update() {
     const [type,setType] = useState('')
     const navigate = useNavigate();
     const {id} =useParams();
+
+    useEffect(()=>{
+        axios.get(`http://localhost:8081/car/${id}`)
+        .then(res=>{
+            console.log(res.data);
+            setName(res.data[0].name);
+            setType(res.data[0].type);
+
+        })
+        .catch(err=> console.log("error"));
+    },[id]);
+
     function handleSubmit(event){
         event.preventDefault();
         axios.put(`http://localhost:8081/carupdate/${id}`,{name,type})
@@ -29,16 +41,16 @@ function Update() {
             <form onSubmit={handleSubmit} className='p-4'> 
                 <div className="form-group">
                     <label > Car Model</label>
-                    <input type="Text" className="form-control" placeholder="Car Model Name"
+                    <input type="Text" className="form-control" placeholder="Car Model Name" value={name}
                     onChange={e=>setName(e.target.value)}/>
                     
                 </div>
                 <div className="form-group mt-2">
                     <label >Car Manufacture</label>
-                    <input type="text" className="form-control"  placeholder="Manufacture Name"
+                    <input type="text" className="form-control"  placeholder="Manufacture Name" value={type}
                     onChange={e=>setType(e.target.value)}/>
                 </div>
-                <button type="submit" className="btn btn-primary mt-3">Update1 Car</button>
+                <button type="submit" className="btn btn-primary mt-3">Update Car</button>
             </form>
         </div>
     </div>
