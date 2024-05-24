@@ -70,6 +70,21 @@ app.get('/car/:id',(req, res)=>{
     });
 });
 
+app.post('/login',(req,rse)=>{
+    const sql ="SELECT * FROM `login` WHERE `name` =? AND `email` = ?";
+    db.query(sql,[req.body.email,req.body.password],(err,data)=>{
+        if(err){
+            return res.json("Error");
+        }
+        if(data.listen>0){
+            return res.json("pass");
+        }
+        else{
+            return res.json("fail");
+        }
+    })
+})
+
 app.listen(8081,()=>{
     console.log("running ");
 })
