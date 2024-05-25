@@ -17,11 +17,17 @@ function Signin() {
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) {
       errors.email = 'Invalid email address.';
     }
+    else{
+      errors.email ='';
+    }
 
     if (!values.password) {
       errors.password = 'Password is required.';
     } else if (values.password.length < 8) {
       errors.password = 'Password must be at least 8 characters long.';
+    }
+    else{
+      errors.password ='';
     }
 
     return errors;
@@ -38,14 +44,13 @@ function Signin() {
     event.preventDefault();
     setErrors(validation(values))
     if(errors.email === '' && errors.password ===''){
-      alert(values.password);
       axios.post('http://localhost:8081/login',values)
       .then(res=>{
         if(res.data === "pass"){
           navigate('/');
         }
         else{
-          alert("No data");
+          alert(res.data);
         }
 
       }).catch(err=>console.log("Error"))

@@ -70,13 +70,13 @@ app.get('/car/:id',(req, res)=>{
     });
 });
 
-app.post('/login',(req,rse)=>{
-    const sql ="SELECT * FROM `login` WHERE `name` =? AND `email` = ?";
+app.post('/login',(req,res)=>{
+    const sql ="SELECT * FROM login WHERE `email` = ? AND `password`=?";
     db.query(sql,[req.body.email,req.body.password],(err,data)=>{
         if(err){
             return res.json("Error");
         }
-        if(data.listen>0){
+        if(data.length > 0){
             return res.json("pass");
         }
         else{
@@ -85,6 +85,19 @@ app.post('/login',(req,rse)=>{
     })
 })
 
+app.post('/reg',(req,res)=>{
+    const sql  = "INSERT INTO `login`(`name`, `email`, `password`) VALUES (?,?,?)";
+    const values =[
+        req.body.uname,
+        req.body.email,
+        req.body.password
+    ]
+    db.query(sql,values,(err,data)=>{
+        if (err) return res.json("error");
+        return res.json(data);
+    })
+
+})
 app.listen(8081,()=>{
     console.log("running ");
 })
