@@ -47,6 +47,7 @@ function Signin() {
       axios.post('http://localhost:8081/login',values)
       .then(res=>{
         if(res.data === "pass"){
+
           navigate('/');
         }
         else{
