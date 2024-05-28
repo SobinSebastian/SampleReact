@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const mysql = require("mysql");
 const app = express();
-
+const jwt = require("jsonwebtoken");
 app.use(express.json())
 app.use(cors());
 
@@ -77,7 +77,9 @@ app.post('/login',(req,res)=>{
             return res.json("Error");
         }
         if(data.length > 0){
-            return res.json("pass");
+            const id = data[0].id;
+            const token = jwt.sign({id},"jsonkey",{expiresIn :300})
+            return res.json({Login : true,token,data});
         }
         else{
             return res.json("fail");
