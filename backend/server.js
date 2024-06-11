@@ -70,6 +70,29 @@ app.get('/car/:id',(req, res)=>{
     });
 });
 
+
+const verifyjwt=(req,res,next) =>{
+    const token = req.headers["access-token"];
+    if(!token){
+        return res.json("Need Token");
+    }else{
+        jwt.verify(token,"jsonkey",(err,decoded)=>{
+            if(err){
+                return res.json("Not");
+            }
+            else{
+                req.userId = decoded.id;
+                next();
+            }
+        })
+    }
+}
+
+app.get('/checkauth',verifyjwt,(req,res)=>{
+    return res.json("successed");
+})
+
+
 app.post('/login',(req,res)=>{
     const sql ="SELECT * FROM login WHERE `email` = ? AND `password`=?";
     db.query(sql,[req.body.email,req.body.password],(err,data)=>{
@@ -102,25 +125,6 @@ app.post('/reg',(req,res)=>{
 })
 
 
-const verifyjwt=(req,res,next) =>{
-    const token = req.headers["access-token"];
-    if(!token){
-        return res.json("Need Token");
-    }else{
-        jwt.verify(token,"jsonkey",(err,decoded)=>{
-            if(err){
-                return res.json("Not");
-            }
-            else{
-                return res.json("Authnticated");
-            }
-        })
-    }
-}
-
-app.get('/checkauth',verifyjwt,(req,res)=>{
-    return res.json("successed");
-})
 
 
 app.listen(8081,()=>{

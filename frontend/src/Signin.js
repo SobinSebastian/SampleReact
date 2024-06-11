@@ -48,6 +48,7 @@ function Signin() {
       .then(res=>{
         if(res.data.Login){
 
+          localStorage.setItem("token",res.data.token);
           navigate('/home');
         }
         else{
