@@ -48,7 +48,7 @@ function Signin() {
       .then(res=>{
         if(res.data.Login){
 
-          navigate('/');
+          navigate('/home');
         }
         else{
           alert(res.data);
