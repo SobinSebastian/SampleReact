@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 
+
 function CreateCars() {
     const [name,setName] = useState('')
     const [type,setType] = useState('')

@@ -9,6 +9,7 @@ import Selectcar from './Selectcar';
 import Signin from './Signin';
 import Signup from './Signup';
 import Home from './Home';
+import File from './File';
 
 
 function App() {
@@ -22,6 +23,8 @@ function App() {
           <Route path="/update/:id" element={<Update />} />
           <Route path="/selectcar" element={<Selectcar />} />
           <Route path="/home" element={<Home />} />
+          <Route path="/file" element={<File />} />
+
         </Routes>
       </Router>
   );

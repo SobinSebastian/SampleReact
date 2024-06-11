@@ -3,9 +3,24 @@ const cors = require("cors");
 const mysql = require("mysql");
 const app = express();
 const jwt = require("jsonwebtoken");
+const multer = require("multer");
+const path = require("path");
 app.use(express.json())
 app.use(cors());
+app.use(express.static('public'))
+const storage = multer.diskStorage({
+    destination:(req,file,cb) =>{
+        cb(null,'public/images')
+    },
+    filename:(req,file,cb)=>{
+        cb(null,file.fieldname+"_"+Date.now() + path.extname(file.originalname))
+    }
+}
+)
 
+const upload = multer({
+    storage : storage
+})
 const db = mysql.createConnection({
     host:"localhost",
     user:"root",
@@ -23,6 +38,26 @@ app.get("/",(req,res)=> {
     });
 });
 
+
+app.get("/imv",(req,res)=> {
+    const sql = "SELECT * FROM img";
+    db.query(sql,(err,data)=>{
+        if(err) return res.json("Error");
+        return res.json(data); 
+    });
+});
+
+
+app.post('/uploads',upload.single('image'),(req,res)=>{
+    const image = req.file.filename;
+    const sql ="INSERT INTO `img`(`images`) VALUES (?)";
+    db.query(sql,[image],
+        (err,data)=>{
+            if(err) return res.json("error");
+            return res.json(data);
+        }
+    )
+})
 
 app.post('/create',(req,res)=>{
     const sql ="INSERT INTO models(`name`, `type`) VALUES (?)";
